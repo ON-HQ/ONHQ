@@ -11,8 +11,9 @@ const projects = [
 const Index = () => {
   return (
     <main className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-background px-4">
-      <h1 className="text-[32vw] font-black leading-[0.8] tracking-tighter text-foreground select-none">
-        ONHQ
+      <h1 className="flex flex-col text-center font-black leading-[0.8] tracking-tighter text-foreground select-none md:flex-row">
+        <span className="text-[45vw] md:text-[32vw]">ON</span>
+        <span className="text-[45vw] md:text-[32vw]">HQ</span>
       </h1>
       
       <nav className="mt-8 flex flex-wrap justify-center gap-3 md:gap-6">
