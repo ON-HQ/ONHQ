@@ -10,7 +10,7 @@ const projects = [
 
 const Index = () => {
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4">
+    <main className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-background px-4">
       <h1 className="text-[32vw] font-black leading-[0.8] tracking-tighter text-foreground select-none">
         ONHQ
       </h1>
