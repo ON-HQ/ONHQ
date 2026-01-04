@@ -37,7 +37,7 @@ const Index = () => {
           className="text-muted-foreground hover:text-foreground"
           asChild
         >
-          <a href="mailto:hello@onhq.dev">
+          <a href="mailto:mika@onhq.net">
             <Mail className="mr-1.5 h-3.5 w-3.5" />
             Contact
           </a>
