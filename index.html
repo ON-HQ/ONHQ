@@ -4,24 +4,101 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.png" type="image/png" />
-    <!-- TODO: Set the document title to the name of your application -->
-    <title>Lovable App</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
-
-    <!-- TODO: Update og:title to match your application name -->
-    <meta property="og:title" content="Lovable App" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <title>ONHQ</title>
+    <meta name="description" content="ONHQ - The future of HQ" />
+    <style>
+      :root {
+        --background: #0a0a0a;
+        --foreground: #f2f0e6;
+        --muted: #1f1f1f;
+        --muted-foreground: #999999;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        background: var(--background);
+        color: var(--foreground);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+      }
+      main {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+      }
+      h1 {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-weight: 900;
+        line-height: 0.8;
+        letter-spacing: -0.05em;
+        user-select: none;
+      }
+      .on, .hq { font-size: 45vw; }
+      nav {
+        margin-top: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+      a {
+        text-decoration: none;
+        color: var(--muted-foreground);
+        font-size: 0.875rem;
+        transition: color 0.2s;
+      }
+      a:hover { color: var(--foreground); }
+      .contact-wrap {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .contact {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+      }
+      svg { width: 14px; height: 14px; }
+      @media (min-width: 768px) {
+        h1 { flex-direction: row; }
+        .on, .hq { font-size: 32vw; }
+        nav { gap: 1.5rem; }
+        a { font-size: 1rem; }
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
   </head>
-
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <main>
+      <h1>
+        <span class="on">ON</span>
+        <span class="hq">HQ</span>
+      </h1>
+      
+      <nav>
+        <a href="https://onyou.onhq.net" target="_blank" rel="noopener">ON:You</a>
+        <a href="https://me.onhq.net" target="_blank" rel="noopener">ON:Me</a>
+        <a href="https://ai.onhq.net" target="_blank" rel="noopener">OpenChat</a>
+        <a href="https://qr.onhq.net" target="_blank" rel="noopener">ON:QR</a>
+      </nav>
+
+      <div class="contact-wrap">
+        <a href="mailto:mika@onhq.net" class="contact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          Contact
+        </a>
+      </div>
+    </main>
   </body>
 </html>
