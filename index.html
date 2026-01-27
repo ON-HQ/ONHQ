@@ -2,101 +2,459 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.png" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" id="themeColor" content="#e8d8c3">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><style>path{fill:%231a1a1a}@media(prefers-color-scheme:dark){path{fill:%23e8d8c3}}</style><path d='M100,22 C142,18 178,58 172,102 C166,146 138,178 98,172 C58,166 22,142 28,98 C34,54 58,26 100,22 Z M100,48 C72,42 52,72 52,100 C52,128 72,158 100,152 C128,146 148,128 148,100 C148,72 128,54 100,48 Z' opacity='0.9'/></svg>" type="image/svg+xml" />
     <title>ONHQ</title>
-    <meta name="description" content="ONHQ - The future of HQ" />
+    <meta name="description" content="ONHQ Homepage" />
     <style>
       :root {
-        --background: #0a0a0a;
-        --foreground: #f2f0e6;
-        --muted: #1f1f1f;
-        --muted-foreground: #999999;
+        --background: #e8d8c3;
+        --foreground: #1a1a1a;
       }
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body {
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background: #1a1a1a;
+          --foreground: #e8d8c3;
+        }
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
         background: var(--background);
+        overflow: hidden;
+      }
+      html.imprint-active, 
+      html.imprint-active body {
+        background: var(--foreground);
+      }
+      body {
         color: var(--foreground);
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
         -webkit-font-smoothing: antialiased;
-        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        touch-action: none;
+      }
+      /* Prevent iOS Safari blue links */
+      a[href^="tel"], a[href^="mailto"] {
+        color: inherit;
+        text-decoration: none;
       }
       main {
-        position: fixed;
-        inset: 0;
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 0 1rem;
+        position: relative;
+        width: 100%;
+        height: 100svh;
       }
-      h1 {
+      .logo-wrap {
+        width: 100%;
+        height: 100%;
         display: flex;
-        flex-direction: column;
-        text-align: center;
-        font-weight: 900;
-        line-height: 0.8;
-        letter-spacing: -0.05em;
-        user-select: none;
-      }
-      .on, .hq { font-size: 45vw; }
-      nav {
-        margin-top: 2rem;
-        display: flex;
-        flex-wrap: wrap;
+        align-items: center;
         justify-content: center;
-        gap: 0.75rem;
+        color: var(--foreground);
+        padding: 2rem;
+        z-index: 1;
       }
-      a {
-        text-decoration: none;
-        color: var(--muted-foreground);
-        font-size: 0.875rem;
-        transition: color 0.2s;
+      .logo-wrap svg {
+        width: 100%;
+        height: 100%;
+        max-width: 80vh;
+        max-height: 80vh;
+        filter: drop-shadow(0 0 20px rgba(0,0,0,0.05));
+        animation: 
+          float 25s ease-in-out infinite, 
+          rotate 120s linear infinite;
+        animation-delay: var(--float-delay, 0s), var(--rotate-delay, 0s);
+        transform-origin: center;
+        will-change: transform;
       }
-      a:hover { color: var(--foreground); }
+      @keyframes float {
+        0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+        33% { transform: translateY(-5px) scale(1.01) rotate(0.5deg); }
+        66% { transform: translateY(5px) scale(0.99) rotate(-0.5deg); }
+      }
+      @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
       .contact-wrap {
-        position: absolute;
-        bottom: 1.5rem;
-        left: 50%;
-        transform: translateX(-50%);
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 50;
       }
       .contact {
-        display: inline-flex;
+        text-decoration: none;
+        color: var(--foreground);
+        font-size: 0.875rem;
+        opacity: 0.5;
+        transition: opacity 0.2s;
+        display: flex;
         align-items: center;
-        gap: 0.375rem;
+        gap: 0.5rem;
       }
-      svg { width: 14px; height: 14px; }
-      @media (min-width: 768px) {
-        h1 { flex-direction: row; }
-        .on, .hq { font-size: 32vw; }
-        nav { gap: 1.5rem; }
-        a { font-size: 1rem; }
+      .contact:hover { opacity: 1; }
+      .contact svg { width: 16px; height: 16px; }
+
+      /* Imprint Liquid Expansion Styles */
+      .imprint-btn {
+        position: fixed;
+        bottom: 2rem;
+        left: 2rem;
+        background: none;
+        border: none;
+        color: var(--foreground);
+        font-size: 0.875rem;
+        opacity: 0.5;
+        cursor: pointer;
+        transition: opacity 0.2s, transform 0.2s;
+        font-family: inherit;
+        z-index: 200; /* Above expansion */
+      }
+      .imprint-btn:hover { 
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.4s ease, visibility 0.4s;
+      }
+
+      .overlay.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+      }
+
+      .liquid-bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 500px;
+        height: 550px;
+        z-index: -1;
+        filter: drop-shadow(0 0 30px rgba(0,0,0,0.1));
+        display: block;
+      }
+
+      .liquid-bg path {
+        fill: var(--foreground);
+        transition: d 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+      }
+
+      @media (max-width: 850px) {
+        .overlay {
+          align-items: center;
+          justify-content: center;
+          background-color: transparent;
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+          transition: 
+            opacity 0.4s ease, 
+            visibility 0.4s,
+            clip-path 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+          clip-path: circle(0% at var(--click-x, 0) var(--click-y, 100%));
+          will-change: clip-path;
+        }
+
+        .overlay.active {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: all;
+          background-color: var(--foreground);
+          clip-path: circle(150% at var(--click-x, 0) var(--click-y, 100%));
+        }
+
+        .liquid-bg {
+          display: none;
+        }
+
+        .overlay-content { 
+          width: 100%;
+          height: 100%;
+          max-height: 100%;
+          padding: calc(6rem + env(safe-area-inset-top)) 1.5rem calc(4rem + env(safe-area-inset-bottom)) 1.5rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          text-align: center;
+          transform: translateY(30px);
+          opacity: 0;
+          transition: 
+            transform 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.1s, 
+            opacity 0.4s ease 0.1s;
+        }
+
+        .overlay.active .overlay-content {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        .close-btn { 
+          right: 1.5rem; 
+          top: calc(1.5rem + env(safe-area-inset-top));
+          padding: 1.5rem;
+        }
+      }
+
+      .overlay-content {
+        position: relative;
+        width: 450px;
+        max-height: 85%;
+        padding: 4rem 3rem 4rem 2.5rem;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.4s, opacity 0.6s ease 0.4s;
+        color: var(--background);
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+      .overlay-content::-webkit-scrollbar { display: none; }
+
+      .overlay.active .overlay-content {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .imprint-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+        line-height: 1.5;
+      }
+
+      .imprint-section h2 {
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        margin-bottom: 0.8rem;
+        opacity: 0.5;
+        color: var(--background);
+      }
+
+      .imprint-section p {
+        font-size: 0.8rem;
+        margin-bottom: 0.4rem;
+        font-weight: 300;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        background: none;
+        border: none;
+        color: var(--background);
+        cursor: pointer;
+        padding: 0.5rem;
+        opacity: 0.6;
+        transition: opacity 0.2s, transform 0.3s ease;
+        z-index: 10;
+      }
+      .close-btn:hover { 
+        opacity: 1;
+        transform: scale(1.1) rotate(90deg);
+      }
+
+      @media (max-width: 850px) {
+        .overlay-content { 
+          padding: calc(4rem + env(safe-area-inset-top)) 1.5rem calc(4rem + env(safe-area-inset-bottom)) 1.5rem; 
+        }
+        .imprint-grid { 
+          flex-direction: column; 
+          gap: 3rem; 
+          width: 100%;
+          max-width: 400px;
+        }
+        .close-btn { 
+          right: 1.5rem; 
+          top: 1.5rem; 
+          padding: 1rem;
+        }
+        .logo-wrap svg {
+          max-width: 90vw;
+          max-height: 50svh;
+        }
+        .imprint-btn {
+          bottom: calc(1.5rem + env(safe-area-inset-bottom));
+          left: 1.5rem;
+          padding: 1rem 0.5rem;
+        }
+        .contact-wrap {
+          bottom: calc(1.5rem + env(safe-area-inset-bottom));
+          right: 1.5rem;
+          padding: 1rem 0.5rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .overlay-content { padding: 4rem 1.5rem 3rem 1.5rem; }
+        .imprint-section h2 { font-size: 0.55rem; }
+        .imprint-section p { font-size: 0.75rem; }
       }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;900&display=swap" rel="stylesheet">
   </head>
   <body>
     <main>
-      <h1>
-        <span class="on">ON</span>
-        <span class="hq">HQ</span>
-      </h1>
-      
-      <nav>
-        <a href="https://onyou.onhq.net" target="_blank" rel="noopener">ON:You</a>
-        <a href="https://me.onhq.net" target="_blank" rel="noopener">ON:Me</a>
-        <a href="https://ai.onhq.net" target="_blank" rel="noopener">OpenChat</a>
-        <a href="https://qr.onhq.net" target="_blank" rel="noopener">ON:QR</a>
-      </nav>
+      <div class="logo-wrap">
+          <!-- Redesigned organic ONHQ mark - Pure fluid motion -->
+          <svg viewBox="0 0 200 200" fill="currentColor" aria-label="ONHQ Animated Logo">
+          <!-- Main organic outer ring (O) - Never hitting perfect circle -->
+          <path d="M100,22 C142,18 178,58 172,102 C166,146 138,178 98,172 C58,166 22,142 28,98 C34,54 58,26 100,22 Z 
+                    M100,48 C72,42 52,72 52,100 C52,128 72,158 100,152 C128,146 148,128 148,100 C148,72 128,54 100,48 Z" 
+                style="opacity: 0.9;">
+            <animate id="morphAnim" attributeName="d" dur="35s" repeatCount="indefinite"
+              calcMode="spline"
+              keyTimes="0; 0.25; 0.5; 0.75; 1"
+              keySplines="0.45, 0.05, 0.55, 0.95; 0.45, 0.05, 0.55, 0.95; 0.45, 0.05, 0.55, 0.95; 0.45, 0.05, 0.55, 0.95"
+              values="M100,22 C142,18 178,58 172,102 C166,146 138,178 98,172 C58,166 22,142 28,98 C34,54 58,26 100,22 Z M100,48 C72,42 52,72 52,100 C52,128 72,158 100,152 C128,146 148,128 148,100 C148,72 128,54 100,48 Z;
+                      M105,25 C145,15 185,65 175,110 C165,155 135,185 90,175 C45,165 15,135 25,90 C35,45 65,35 105,25 Z M100,55 C70,45 55,80 55,105 C55,130 80,165 105,155 C130,145 155,130 155,105 C155,80 130,65 100,55 Z;
+                      M95,20 C135,25 170,50 175,95 C180,140 145,175 100,180 C55,185 25,150 20,105 C15,60 55,15 95,20 Z M100,45 C75,50 45,75 45,100 C45,125 70,155 95,150 C120,145 150,120 150,95 C150,70 125,40 100,45 Z;
+                      M102,28 C138,22 172,62 168,105 C164,148 132,175 92,168 C52,161 28,135 32,92 C36,49 66,34 102,28 Z M100,52 C78,48 58,78 58,102 C58,126 78,152 102,148 C126,144 142,126 142,102 C142,78 122,56 100,52 Z;
+                      M100,22 C142,18 178,58 172,102 C166,146 138,178 98,172 C58,166 22,142 28,98 C34,54 58,26 100,22 Z M100,48 C72,42 52,72 52,100 C52,128 72,158 100,152 C128,146 148,128 148,100 C148,72 128,54 100,48 Z" />
+          </path>
+          </svg>
+      </div>
+
+      <script>
+        // Immediate sync for SVG to prevent jump
+        (function() {
+          const now = Date.now() / 1000;
+          const morphAnim = document.getElementById('morphAnim');
+          if (morphAnim) {
+            morphAnim.setAttribute('begin', `-${now % 35}s`);
+          }
+          const floatDelay = -(now % 25);
+          const rotateDelay = -(now % 120);
+          document.documentElement.style.setProperty('--float-delay', `${floatDelay}s`);
+          document.documentElement.style.setProperty('--rotate-delay', `${rotateDelay}s`);
+        })();
+
+        // Imprint Toggle Logic
+         function toggleImprint(event) {
+          const overlay = document.getElementById('imprintOverlay');
+          const isActive = overlay.classList.toggle('active');
+          const html = document.documentElement;
+          const themeMeta = document.getElementById('themeColor');
+          const isMobile = window.innerWidth <= 850;
+          
+          // Force a reflow
+          void overlay.offsetWidth;
+
+          if (isActive) {
+            // Mobile-specific expansion logic
+            if (isMobile) {
+              const x = event ? (event.clientX || (event.touches && event.touches[0].clientX)) : (window.innerWidth / 2);
+              const y = event ? (event.clientY || (event.touches && event.touches[0].clientY)) : (window.innerHeight / 2);
+              html.style.setProperty('--click-x', `${x}px`);
+              html.style.setProperty('--click-y', `${y}px`);
+              html.classList.add('imprint-active');
+            } else {
+              // Desktop-specific SVG path expansion
+              const path = document.getElementById('liquidPath');
+              path.setAttribute('d', 'M0,550 L500,550 C500,400 480,150 400,80 C320,10 0,0 0,0 Z');
+            }
+            
+            // Sync theme color
+            const fg = getComputedStyle(html).getPropertyValue('--foreground').trim();
+            themeMeta.setAttribute('content', fg);
+          } else {
+            html.classList.remove('imprint-active');
+            if (!isMobile) {
+              const path = document.getElementById('liquidPath');
+              path.setAttribute('d', 'M0,550 L50,550 C50,550 50,550 50,550 C50,550 0,550 0,550 Z');
+            }
+            const bg = getComputedStyle(html).getPropertyValue('--background').trim();
+            themeMeta.setAttribute('content', bg);
+          }
+        }
+      </script>
+
+      <button class="imprint-btn" onclick="toggleImprint(event)" aria-label="Open Imprint">Imprint / Impressum</button>
+
+      <div id="imprintOverlay" class="overlay" onclick="if(event.target === this) toggleImprint(event)" role="dialog" aria-modal="true" aria-label="Imprint Overlay">
+        <svg class="liquid-bg" viewBox="0 0 500 550" preserveAspectRatio="none" aria-hidden="true">
+          <path id="liquidPath" d="M0,550 L50,550 C50,550 50,550 50,550 C50,550 0,550 0,550 Z" />
+        </svg>
+        <div class="overlay-content">
+          <button class="close-btn" onclick="toggleImprint(event)" aria-label="Close Imprint">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+          <div class="imprint-grid">
+            <div class="imprint-section">
+              <h2>Imprint</h2>
+              <p>
+                <strong>ONHQ</strong><br>
+                Mika Fynn Schildt<br>
+                Am Bohlkamp 64<br>
+                29339 Wathlingen<br>
+                Lower Saxony, Germany
+              </p>
+              <p>
+                <strong>Contact</strong><br>
+                mika@onhq.net<br>
+                +49 171 2800585
+              </p>
+            </div>
+            <div class="imprint-section">
+              <h2>Impressum</h2>
+              <p>
+                <strong>Angaben gemäß § 5 TMG</strong><br>
+                Mika Fynn Schildt<br>
+                Am Bohlkamp 64<br>
+                29339 Wathlingen<br>
+                Niedersachsen, Deutschland
+              </p>
+              <p>
+                <strong>Kontakt</strong><br>
+                E-Mail: mika@onhq.net<br>
+                Telefon: +49 171 2800585
+              </p>
+              <p>
+                Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:<br>
+                Mika Fynn Schildt
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="contact-wrap">
-        <a href="mailto:mika@onhq.net" class="contact">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <a href="mailto:mika@onhq.net" class="contact" aria-label="Send email to mika@onhq.net">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
           </svg>
-          Contact
+          mika@onhq.net
         </a>
       </div>
     </main>
